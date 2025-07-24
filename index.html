@@ -4297,42 +4297,6 @@ def value_iteration(P, R, gamma=0.9, tol=1e-6):
         </details>
 
         <!-- Deeper dive into the policy gradient theorem and actor–critic variants -->
-        <details open class="fade-in">
-          <summary>
-            <i class="fas fa-brain"></i>
-            10.7 Deeper Dive into Policy Gradient &amp; Actor–Critic Variants
-          </summary>
-          <div class="details-content">
-            <p>
-              The foundation of policy gradient methods is the <strong>policy gradient theorem</strong>. For a parameterized stochastic policy \(\pi_\theta(a \mid s)\), the objective function
-              is the expected return \(J(\theta) = \mathbb{E}_{\pi_\theta}[G_0]\).  The theorem shows that its gradient is
-            </p>
-            <p>
-            \[
-              \nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}\big[ \nabla_\theta \log \pi_\theta(a \mid s)\, Q^{\pi_\theta}(s,a) \big],
-            \]
-            </p>
-            <p>
-              where \(Q^{\pi_\theta}(s,a)\) is the action–value function.  This expression provides an unbiased gradient estimate from trajectory samples and forms the basis of the <strong>REINFORCE</strong> algorithm. To reduce variance, a baseline (often a state-value estimate \(V^\pi(s)\)) is subtracted from the return.
-            </p>
-            <p>
-              <strong>REINFORCE:</strong> The simplest policy gradient algorithm uses Monte Carlo returns as an estimate of \(Q^{\pi_\theta}(s,a)\).  For each trajectory, it performs updates of the form \( \theta \leftarrow \theta + \alpha \sum_t \nabla_\theta \log \pi_\theta(a_t \mid s_t)\, (G_t - b(s_t)) \), where \(b(s_t)\) is a baseline.
-            </p>
-            <p>
-              <strong>A3C and A2C:</strong> Asynchronous Advantage Actor–Critic (A3C) leverages multiple parallel actors and critics to decorrelate experience and speed up training.  Each actor learns its own policy \(\pi_{\theta'}\) and periodically synchronizes with global parameters \(\theta\).  Advantage Actor–Critic (A2C) is a synchronous variant that waits for all actors to finish an update before applying gradients.  Both algorithms use an advantage estimate \(A(s,a) = Q(s,a) - V(s)\) to reduce variance and share a critic network for \(V(s)\).
-            </p>
-            <p>
-              <strong>Deterministic Policy Gradient and DDPG:</strong> For continuous action spaces, the deterministic policy gradient theorem expresses the gradient as
-              \( \nabla_\theta J(\theta) = \mathbb{E}_{s\sim\rho^{\mu}} [ \nabla_a Q^\mu(s,a) \nabla_\theta \mu_\theta(s) ] \).  Deep Deterministic Policy Gradient (DDPG) extends this to deep networks by combining a deterministic actor with a critic and using experience replay and target networks.  Twin Delayed DDPG (TD3) further reduces over‑estimation by learning two critics and using the smaller value for the target while delaying actor updates.
-            </p>
-            <p>
-              <strong>Entropy‑Regularized Methods:</strong> Soft Actor–Critic (SAC) introduces an entropy term to encourage exploration and maximize \(J(\pi) = \mathbb{E}_t [ r_t + \alpha\, H(\pi(\cdot\mid s_t)) ]\), where \(H\) is the entropy and \(\alpha\) controls the exploration temperature.  This objective encourages stochastic policies and improves stability and sample efficiency compared to on‑policy methods.
-            </p>
-            <p>
-              These variants illustrate the rich landscape of policy gradient methods, from the simple REINFORCE algorithm to synchronous and asynchronous actor–critic methods, deterministic gradients for continuous control and entropy‑regularized approaches like SAC.  For a comprehensive survey of policy gradient algorithms, see the detailed review by Lilian Weng.
-            </p>
-          </div>
-        </details>
 
         <!-- Architecture of Neural Network Policies -->
         <details open class="fade-in">
@@ -4499,6 +4463,42 @@ for iteration in range(num_iterations):
         </details>
 
 
+        <details open class="fade-in">
+          <summary>
+            <i class="fas fa-brain"></i>
+            10.7 Deeper Dive into Policy Gradient &amp; Actor–Critic Variants
+          </summary>
+          <div class="details-content">
+            <p>
+              The foundation of policy gradient methods is the <strong>policy gradient theorem</strong>. For a parameterized stochastic policy \(\pi_\theta(a \mid s)\), the objective function
+              is the expected return \(J(\theta) = \mathbb{E}_{\pi_\theta}[G_0]\).  The theorem shows that its gradient is
+            </p>
+            <p>
+            \[
+              \nabla_\theta J(\theta) = \mathbb{E}_{\pi_\theta}\big[ \nabla_\theta \log \pi_\theta(a \mid s)\, Q^{\pi_\theta}(s,a) \big],
+            \]
+            </p>
+            <p>
+              where \(Q^{\pi_\theta}(s,a)\) is the action–value function.  This expression provides an unbiased gradient estimate from trajectory samples and forms the basis of the <strong>REINFORCE</strong> algorithm. To reduce variance, a baseline (often a state-value estimate \(V^\pi(s)\)) is subtracted from the return.
+            </p>
+            <p>
+              <strong>REINFORCE:</strong> The simplest policy gradient algorithm uses Monte Carlo returns as an estimate of \(Q^{\pi_\theta}(s,a)\).  For each trajectory, it performs updates of the form \( \theta \leftarrow \theta + \alpha \sum_t \nabla_\theta \log \pi_\theta(a_t \mid s_t)\, (G_t - b(s_t)) \), where \(b(s_t)\) is a baseline.
+            </p>
+            <p>
+              <strong>A3C and A2C:</strong> Asynchronous Advantage Actor–Critic (A3C) leverages multiple parallel actors and critics to decorrelate experience and speed up training.  Each actor learns its own policy \(\pi_{\theta'}\) and periodically synchronizes with global parameters \(\theta\).  Advantage Actor–Critic (A2C) is a synchronous variant that waits for all actors to finish an update before applying gradients.  Both algorithms use an advantage estimate \(A(s,a) = Q(s,a) - V(s)\) to reduce variance and share a critic network for \(V(s)\).
+            </p>
+            <p>
+              <strong>Deterministic Policy Gradient and DDPG:</strong> For continuous action spaces, the deterministic policy gradient theorem expresses the gradient as
+              \( \nabla_\theta J(\theta) = \mathbb{E}_{s\sim\rho^{\mu}} [ \nabla_a Q^\mu(s,a) \nabla_\theta \mu_\theta(s) ] \).  Deep Deterministic Policy Gradient (DDPG) extends this to deep networks by combining a deterministic actor with a critic and using experience replay and target networks.  Twin Delayed DDPG (TD3) further reduces over‑estimation by learning two critics and using the smaller value for the target while delaying actor updates.
+            </p>
+            <p>
+              <strong>Entropy‑Regularized Methods:</strong> Soft Actor–Critic (SAC) introduces an entropy term to encourage exploration and maximize \(J(\pi) = \mathbb{E}_t [ r_t + \alpha\, H(\pi(\cdot\mid s_t)) ]\), where \(H\) is the entropy and \(\alpha\) controls the exploration temperature.  This objective encourages stochastic policies and improves stability and sample efficiency compared to on‑policy methods.
+            </p>
+            <p>
+              These variants illustrate the rich landscape of policy gradient methods, from the simple REINFORCE algorithm to synchronous and asynchronous actor–critic methods, deterministic gradients for continuous control and entropy‑regularized approaches like SAC.  For a comprehensive survey of policy gradient algorithms, see the detailed review by Lilian Weng.
+            </p>
+          </div>
+        </details>
 
       <!-- ============================================================ -->
       <!-- Part 11: Deep Q-Learning & Value-Based Methods -->
